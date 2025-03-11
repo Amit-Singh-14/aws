@@ -2,7 +2,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid';
 
 // Get region from environment variables or use a default
-const REGION = 'eu-central-1';
+const REGION = 'eu-west-1';
 const BUCKET_NAME = process.env.S3_BUCKET_NAME || 'uuid-storage';
 
 // Initialize S3 client with region
