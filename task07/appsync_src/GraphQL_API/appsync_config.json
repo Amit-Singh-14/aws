@@ -11,7 +11,7 @@
             "service_role_name": "appsync_role",
             "dynamodb_config": {
                 "table_name": "Events",
-                "aws_region": "eu-central-1"
+                "aws_region": "eu-west-1"
             }
         }
     ],
