@@ -1,4 +1,9 @@
 exports.handler = async (event) => {
-    console.log("SQS Event Received:", JSON.stringify(event, null, 2));
-    return { statusCode: 200, body: "Message logged successfully." };
+    console.log("Received SQS Event:", JSON.stringify(event, null, 2));
+
+    for (const record of event.Records) {
+        console.log("Message Body:", record.body);
+    }
+
+    return { statusCode: 200, body: "Processed SQS Messages" };
 };
