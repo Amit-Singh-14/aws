@@ -14,10 +14,10 @@ const RESERVATIONS_TABLE = process.env.reservations_table;
 // Main handler function
 export const handler = async (event, context) => {
   console.log("Event:", JSON.stringify({
-      path: event.path,
-      httpMethod: event.httpMethod,
-      headers: event.headers?.Authorization,
-      body: event.body
+    path: event.path,
+    httpMethod: event.httpMethod,
+    headers: event.headers?.Authorization,
+    body: event.body
   }));
   try {
     const { resource: path, httpMethod } = event;
@@ -34,10 +34,10 @@ export const handler = async (event, context) => {
     const response = routes[routeKey]
       ? await routes[routeKey](event)
       : {
-          statusCode: 404,
-          headers: corsHeaders(),
-          body: JSON.stringify({ message: "Not Found" }),
-        };
+        statusCode: 404,
+        headers: corsHeaders(),
+        body: JSON.stringify({ message: "Not Found" }),
+      };
     return response;
   } catch (error) {
     console.error("Error:", error);
@@ -137,7 +137,7 @@ async function handleSignin(event) {
     };
     const authResponse = await cognito.adminInitiateAuth(params).promise();
     return formatResponse(200, {
-      accessToken: authResponse.AuthenticationResult?.IdToken
+      idToken: authResponse.AuthenticationResult?.IdToken
     });
   } catch (error) {
     return formatResponse(400, { error: error.message });
@@ -177,20 +177,20 @@ async function handleCreateTable(event) {
   }
   const table = JSON.parse(event.body);
   if (typeof table.number !== "number" ||
-      typeof table.places !== "number" ||
-      typeof table.isVip !== "boolean") {
+    typeof table.places !== "number" ||
+    typeof table.isVip !== "boolean") {
     return formatResponse(400, {
       message: 'Table number, capacity, and location are required'
     });
   }
   let tableId = table.id || uuidv4();
   const tableData = {
-        id: String(tableId),
-        number: table.number,
-        places: table.places,
-        isVip: table.isVip,
-        minOrder: table.minOrder ?? 0,
-      };
+    id: String(tableId),
+    number: table.number,
+    places: table.places,
+    isVip: table.isVip,
+    minOrder: table.minOrder ?? 0,
+  };
   const params = {
     TableName: TABLES_TABLE,
     Item: tableData
@@ -314,8 +314,8 @@ async function handleCreateReservation(event) {
       id: uuidv4(),
       tableId: tableId,
       tableNumber: table.number,
-      clientName: clientName ,
-      phoneNumber: phoneNumber ,
+      clientName: clientName,
+      phoneNumber: phoneNumber,
       username: username,
       date: date,
       time: slotTimeStart,
@@ -340,7 +340,7 @@ async function handleCreateReservation(event) {
 function getUsernameFromToken(event) {
   try {
     if (event.requestContext && event.requestContext.authorizer &&
-        event.requestContext.authorizer.claims) {
+      event.requestContext.authorizer.claims) {
       const username = event.requestContext.authorizer.claims['cognito:username'];
       return username;
     }
